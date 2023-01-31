@@ -6,8 +6,11 @@
 
 - [Main Readme](../README.md)
 
-## initial setup every sandbox run
-
+## running the container
+- I use an alias in order to run this with the current workspace
+  ``` bash
+  alias daws='docker run -it --rm -v ${PWD}:/work -w /work --entrypoint /bin/bash stake25/aws-cli-ubuntu' 
+  ```
 - you must configure aws with the sandbox credentials each time it is run
 
   ``` bash
