@@ -11,9 +11,8 @@ services:
     volumes:
       - /home/stake/containers/jellyfin/config:/config
       - /home/stake/containers/jellyfin/config:/cache
-      - /home/nas/smb_mount:/media
+      - /home/nas/smb_mount/jellyfin-media:/media
     restart: 'unless-stopped'
     # Optional - may be necessary for docker healthcheck to pass if running in host network mode
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
