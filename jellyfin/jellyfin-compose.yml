@@ -5,7 +5,6 @@ services:
     container_name: jellyfin
     user: 1000:1000
     environment:
-
       - TZ=America/New_York
     network_mode: 'host'
     volumes:
