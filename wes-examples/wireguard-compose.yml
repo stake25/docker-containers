@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+
+  wireguard:
+    image: linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /home/stake/snipes/Container/WireGuard/config:/config
+    ports:
+      - "5000:5000"
+      - "51821:51821/udp"
+
+  wireguard-ui:
+    image: ngoduykhanh/wireguard-ui:latest
+    container_name: wireguard-ui
+    depends_on:
+      - wireguard
+    cap_add:
+      - NET_ADMIN
+    network_mode: service:wireguard
+    environment:
+      - SENDGRID_API_KEY
+      - EMAIL_FROM_ADDRESS
+      - EMAIL_FROM_NAME
+      - SESSION_SECRET
+      - WGUI_USERNAME=snipesdono
+      - WGUI_PASSWORD=Test123!
+      - WG_CONF_TEMPLATE
+      - WGUI_MANAGE_START=true
+      - WGUI_MANAGE_RESTART=true
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    volumes:
+      - /home/stake/snipes/Container/WireGuard/db:/app/db
+      - /home/stake/snipes/Container/WireGuard/config_ui:/etc/wireguard
