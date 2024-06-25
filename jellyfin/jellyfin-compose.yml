@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   jellyfin:
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:latest
     container_name: jellyfin
     user: 1000:1000
     environment:
@@ -10,8 +10,9 @@ services:
     volumes:
       - /home/stake/containers/jellyfin/config:/config
       - /home/stake/containers/jellyfin/config:/cache
-      - /home/nas/smb_mount/jellyfin-media:/media
+      - /home/stake/usb_mount/media_storage/media:/media
     restart: 'unless-stopped'
     # Optional - may be necessary for docker healthcheck to pass if running in host network mode
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
