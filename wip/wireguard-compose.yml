@@ -1,25 +1,41 @@
-version: "2.1"
+version: "3"
+
 services:
+
   wireguard:
-    image: linuxserver/wireguard
+    image: linuxserver/wireguard:latest
     container_name: wireguard
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
-    environment:
-      - PUID=1000
-      - PGID-1000
-      - TZ=America/New_York
-      - SERVERURL=auto
-      - SERVERPORT=51820
-      - PEERS=1
-      - PEERDNS=auto
     volumes:
-      - /home/stake/containers/wireguard/volumes/config:/config
-      - /lob/modules:/lib/modules
+      - /home/stake/snipes/Container/WireGuard/config:/config
     ports:
-      - 51820:51820/udp
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-    restart: unless-stopped
+      - "8081:5000"
+      - "51821:51821/udp"
+
+  wireguard-ui:
+    image: ngoduykhanh/wireguard-ui:latest
+    container_name: wireguard-ui
+    depends_on:
+      - wireguard
+    cap_add:
+      - NET_ADMIN
+    network_mode: service:wireguard
+    environment:
+      - SENDGRID_API_KEY
+      - EMAIL_FROM_ADDRESS
+      - EMAIL_FROM_NAME
+      - SESSION_SECRET
+      - WGUI_USERNAME=snipesdono
+      - WGUI_PASSWORD=Test123!
+      - WG_CONF_TEMPLATE
+      - WGUI_MANAGE_START=true
+      - WGUI_MANAGE_RESTART=true
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    volumes:
+      - /home/stake/snipes/Container/WireGuard/db:/app/db
+      - /home/stake/snipes/Container/WireGuard/config_ui:/etc/wireguard
 
